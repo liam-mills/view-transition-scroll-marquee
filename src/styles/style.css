@@ -1,0 +1,34 @@
+@import 'tailwindcss';
+
+@theme {
+    --font-sans: 'Inter Variable', sans-serif;
+    --color-black: #121111; 
+    --color-grey: #5F5D5C;
+    --color-white: #FAFAF8;
+    --color-blue: #473BF0;
+}
+
+@custom-variant interact {
+    @media (any-hover: hover) {
+        &:hover {
+            @slot;
+        }
+    }
+    &:focus-visible {
+        @slot;
+    }
+}
+
+@view-transition {
+    navigation: auto;
+}
+
+::selection {
+    @apply bg-blue text-white;
+}
+
+:root {
+    scrollbar-gutter: stable both-edges;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-black) transparent;
+}
