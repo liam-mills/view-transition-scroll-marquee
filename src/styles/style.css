@@ -28,7 +28,5 @@
 }
 
 :root {
-    scrollbar-gutter: stable both-edges;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-black) transparent;
+    scrollbar-color: var(--color-grey) var(--color-black);
 }

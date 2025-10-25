@@ -1,0 +1,25 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '@layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const projects = await getCollection('projects');
+	return projects.map(project => ({
+		params: { id: project.id },
+		props: { project },
+	}));
+}
+type Props = CollectionEntry<'projects'>;
+
+const { project } = Astro.props;
+const { company, link, dates } = project.data;
+const { Content } = await render(project);
+---
+
+<Layout>
+    <div class="px-6 space-y-6">
+        <Image src={project.data.image} alt={project.data.alt} layout="constrained" width={600} style={`view-transition-name: ${project.id}-image;`} />
+        <h1 class="text-3xl">{project.data.title}</h1>
+    </div>
+</Layout>

@@ -1,7 +1,64 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const projects = (await getCollection('projects'));
 ---
 
 <Layout>
-	<p>Index.</p>
+	{projects &&
+	<>
+		<h1 class="text-3xl px-6 mb-64">Projects</h1>
+		<div class="marquee gap-4">
+			<div class="marquee-content gap-4">
+				{projects.map((project) => {
+					const { title, image, alt } = project.data;
+					return (
+						<a class="p-6 bg-grey/10" href={`${import.meta.env.BASE_URL}/project/${project.id}`} aria-label={title}>
+							<Image src={image} alt={alt} layout="constrained" width={400} style={`view-transition-name: ${project.id}-image;`} />
+						</a>
+					)
+				})}
+			</div>
+			<div class="marquee-content gap-4" aria-hidden="true">
+				{projects.map((project) => {
+					const { title, image, alt } = project.data;
+					return (
+						<a class="p-6 bg-grey/10" href={`${import.meta.env.BASE_URL}/project/${project.id}`} aria-label={title}>
+							{/* Cannot assign a view-transition-name onto the duplicated marquee content so this transition looks janky. */}
+							<Image src={image} alt={alt} layout="constrained" width={400} />
+						</a>
+					)
+				})}
+			</div>
+		</div>
+	</>
+	}
 </Layout>
+
+<style>
+	.marquee {
+		--speed: 30s;
+		display: flex;
+		overflow: hidden;
+		user-select: none;
+	}
+
+	.marquee-content {
+		flex-shrink: 0;
+		display: flex;
+		justify-content: space-around;
+		min-width: 100%;
+		animation: scroll 20s linear infinite;
+	}
+
+	@keyframes scroll {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(calc(-100% - calc(var(--spacing) * 4)));
+		}
+	}
+</style>
